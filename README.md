@@ -29,7 +29,7 @@ The program demonstrates:
 * Object relationships
 * Encapsulation
 
-To run the program, open the project in Visual Studio Code, select the Python interpreter from the `.venv` environment, open `task_management.py`, and click **Run Python File**.
+To run the program, open the project in Visual Studio Code, select the Python interpreter from the .venv environment, open task_management.py, and click **Run Python File**.
 
 Test cases:
 
