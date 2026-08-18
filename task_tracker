@@ -1,0 +1,89 @@
+class StudyItem:
+    def __init__(self, course, activity, priority="Normal"):
+        self.course = course
+        self.activity = activity
+        self.priority = priority
+        self.is_done = False
+        self.in_progress = False
+
+    def start(self):
+        self.in_progress = True
+        self.is_done = False
+
+    def finish(self):
+        self.in_progress = False
+        self.is_done = True
+
+    def get_status(self):
+        if self.is_done:
+            return "Finished"
+        if self.in_progress:
+            return "In Progress"
+        return "Pending"
+
+    def __str__(self):
+        return f"[{self.course}] {self.activity} | Priority: {self.priority} | Status: {self.get_status()}"
+
+
+class StudyTracker:
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, task):
+        self.tasks.append(task)
+        print(f"Added: {task.course} - {task.activity}")
+
+    def remove_task(self, task):
+        if task in self.tasks:
+            self.tasks.remove(task)
+            print(f"Removed: {task.course} - {task.activity}")
+
+    def get_completed_tasks(self):
+        return [task for task in self.tasks if task.is_done]
+
+    def display(self):
+        print("\nActive Study Tasks:")
+        if not self.tasks:
+            print("No study tasks found.")
+            return
+
+        for index, task in enumerate(self.tasks, 1):
+            print(f"{index}. {task}")
+        print()
+
+
+if __name__ == "__main__":
+    tracker = StudyTracker()
+
+    task1 = StudyItem("Math 179 D.E", "Practice solving undetermined coefficients", priority="High")
+    task2 = StudyItem("Phy105 Physics 2", "Review Gauss's Law lecture notes", priority="High")
+    task3 = StudyItem("Math 176 Calculus", "Solve integration problem sets")
+    task4 = StudyItem("Phy105 Physics 2", "Study electric potential conceptual problems")
+    task5 = StudyItem("Math 179 D.E", "Review second-order ODE derivations", priority="Low")
+
+    # Add initial tasks
+    tracker.add_task(task1)
+    tracker.add_task(task2)
+    tracker.add_task(task3)
+    tracker.add_task(task4)
+    tracker.add_task(task5)
+
+    tracker.display()
+
+    # Update statuses and remove an item
+    task1.start()
+    task3.finish()
+    task4.finish()
+    task5.finish()
+    tracker.remove_task(task2)
+
+    # Add a new task
+    new_task = StudyItem("Math 176 Calculus", "Practice partial fraction decomposition", priority="High")
+    tracker.add_task(new_task)
+
+    tracker.display()
+
+    # Display completed tasks
+    print("Completed Tasks:")
+    for task in tracker.get_completed_tasks():
+        print(f"- [{task.course}] {task.activity} ({task.priority} Priority)")
