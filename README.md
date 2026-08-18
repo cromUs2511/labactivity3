@@ -25,4 +25,4 @@ Program Execution Summary:
 * Adds a new task during the session.
 * Displays the updated list and shows all completed tasks.
 
-Author: Lorenzo B. Kollin
+Author: Lorenzo B. Kollin 
