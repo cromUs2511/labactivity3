@@ -1,0 +1,222 @@
+class Task:
+    def __init__(self, task_id, title, description, priority):
+        self.task_id = task_id
+        self.title = title
+        self.description = description
+        self.priority = priority
+        self.status = "Pending"
+
+    def mark_completed(self):
+        self.status = "Completed"
+
+    def update_task(self, title, description, priority):
+        self.title = title
+        self.description = description
+        self.priority = priority
+
+    def display_task(self):
+        print(f"Task ID: {self.task_id}")
+        print(f"Title: {self.title}")
+        print(f"Description: {self.description}")
+        print(f"Priority: {self.priority}")
+        print(f"Status: {self.status}")
+        print()
+
+
+class TaskManager:
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, task):
+        self.tasks.append(task)
+        print("\nTask added successfully!")
+
+    def view_tasks(self):
+        if not self.tasks:
+            print("\nNo tasks available.")
+            return
+
+        print()
+        for task in self.tasks:
+            task.display_task()
+
+    def find_task(self, task_id):
+        for task in self.tasks:
+            if task.task_id == task_id:
+                return task
+        return None
+
+    def search_task(self, task_id):
+        task = self.find_task(task_id)
+
+        if task:
+            print("\nTask found:")
+            task.display_task()
+        else:
+            print("\nTask not found.")
+
+    def update_task(self, task_id, title, description, priority):
+        task = self.find_task(task_id)
+
+        if task:
+            task.update_task(title, description, priority)
+            print("\nTask updated successfully!")
+        else:
+            print("\nTask not found.")
+
+    def delete_task(self, task_id):
+        task = self.find_task(task_id)
+
+        if task:
+            self.tasks.remove(task)
+            print("\nTask deleted successfully!")
+        else:
+            print("\nTask not found.")
+
+    def complete_task(self, task_id):
+        task = self.find_task(task_id)
+
+        if task:
+            task.mark_completed()
+            print("\nTask marked as completed!")
+        else:
+            print("\nTask not found.")
+
+
+def add_task_menu(task_manager):
+    task_id = input("Enter task ID: ").strip()
+
+    if task_manager.find_task(task_id):
+        print("\nA task with that ID already exists.")
+        return
+
+    title = input("Enter task title: ").strip()
+    description = input("Enter task description: ").strip()
+
+    while True:
+        priority = input("Enter priority (Low/Medium/High): ").strip().capitalize()
+
+        if priority in ["Low", "Medium", "High"]:
+            break
+
+        print("Invalid priority. Please enter Low, Medium, or High.")
+
+    new_task = Task(
+        task_id,
+        title,
+        description,
+        priority
+    )
+
+    task_manager.add_task(new_task)
+
+
+def search_task_menu(task_manager):
+    task_id = input("Enter task ID: ").strip()
+    task_manager.search_task(task_id)
+
+
+def update_task_menu(task_manager):
+    task_id = input("Enter task ID to update: ").strip()
+
+    task = task_manager.find_task(task_id)
+
+    if not task:
+        print("\nTask not found.")
+        return
+
+    print("\nCurrent information:")
+    task.display_task()
+
+    title = input(f"Enter new title [{task.title}]: ").strip()
+
+    if title == "":
+        title = task.title
+
+    description = input(
+        f"Enter new description [{task.description}]: "
+    ).strip()
+
+    if description == "":
+        description = task.description
+
+    while True:
+        priority = input(
+            f"Enter new priority (Low/Medium/High) [{task.priority}]: "
+        ).strip().capitalize()
+
+        if priority == "":
+            priority = task.priority
+            break
+
+        if priority in ["Low", "Medium", "High"]:
+            break
+
+        print("Invalid priority. Please enter Low, Medium, or High.")
+
+    task_manager.update_task(
+        task_id,
+        title,
+        description,
+        priority
+    )
+
+
+def delete_task_menu(task_manager):
+    task_id = input("Enter task ID to delete: ").strip()
+    task_manager.delete_task(task_id)
+
+
+def complete_task_menu(task_manager):
+    task_id = input("Enter task ID to complete: ").strip()
+    task_manager.complete_task(task_id)
+
+
+def display_menu():
+    print("1. Add Task")
+    print("2. View All Tasks")
+    print("3. Search Task")
+    print("4. Update Task")
+    print("5. Delete Task")
+    print("6. Mark Task as Completed")
+    print("7. Exit")
+
+
+def main():
+    task_manager = TaskManager()
+
+    while True:
+        print()
+        display_menu()
+        print()
+
+        choice = input("Enter your choice (1-7): ").strip()
+
+        if choice == "1":
+            add_task_menu(task_manager)
+
+        elif choice == "2":
+            task_manager.view_tasks()
+
+        elif choice == "3":
+            search_task_menu(task_manager)
+
+        elif choice == "4":
+            update_task_menu(task_manager)
+
+        elif choice == "5":
+            delete_task_menu(task_manager)
+
+        elif choice == "6":
+            complete_task_menu(task_manager)
+
+        elif choice == "7":
+            print("\nProgram ended.")
+            break
+
+        else:
+            print("\nInvalid choice. Please enter 1-7.")
+
+
+if __name__ == "__main__":
+    main()
